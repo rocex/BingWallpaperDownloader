@@ -1,0 +1,29 @@
+{
+    "name": "BingWallpaperDownloader",
+    "description": "Bing 每日壁纸下载器",
+    "version": "1.0.0",
+    "targetType": "executable",
+    "targetName": "BingWallpaperDownloader",
+    "targetPath": ".dub",
+
+    "dependencies": {},
+
+    "buildTypes": {
+        "release": {
+            "buildOptions": [
+                "inline",
+                "optimize",
+                "releaseMode"
+            ],
+            "dflags": [
+                "-L/OPT:REF",
+                "-L/OPT:ICF",
+                "-L/DEBUG:NONE",
+                "-boundscheck=off"
+            ]
+        }
+    },
+
+    "copyFiles-windows-x86": ["$DMD_HOME/windows/bin/libcurl.dll"],
+    "copyFiles-windows-x86_64": ["$DMD_HOME/windows/bin64/libcurl.dll"],
+}
