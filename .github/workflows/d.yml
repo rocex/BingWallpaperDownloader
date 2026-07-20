@@ -13,7 +13,7 @@ jobs:
     steps:
       # 1. 检出仓库代码
       - name: 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # 2. 安装 D 编译器 + dub（稳定版 dmd）
       - name: 安装 D 环境
