@@ -14,5 +14,11 @@ jobs:
       # 1. 检出仓库代码
       - name: 检出代码
         uses: actions/checkout@v5
-
       
+      # 2. 安装 D 编译器 + dub（稳定版 dmd）
+      - name: 安装 D 环境
+        uses: dlang-community/setup-dlang@v2
+        with:
+          compiler: dmd-stable # 也可填 ldc-stable 使用 LDC 编译器
+
+     
