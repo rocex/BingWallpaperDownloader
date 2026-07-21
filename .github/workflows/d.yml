@@ -1,5 +1,8 @@
 name: 自动编译
 
+env:
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+
 # 触发条件：推送到 main 分支、或向 main 提交 PR 时触发
 on:
   push:
