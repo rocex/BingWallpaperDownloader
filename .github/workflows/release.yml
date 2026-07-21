@@ -1,0 +1,51 @@
+name: 自动发布
+
+# 触发条件：推送 v 开头的标签时触发（如 v1.0.0、v1.1.0）
+on:
+  push:
+    tags:
+      - 'v*'
+
+# 授予写入仓库内容的权限（用于创建 Release）
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 D 环境
+        uses: dlang-community/setup-dlang@v2
+        with:
+          compiler: dmd-stable
+
+      - name: 缓存编译依赖
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.dub
+            .dub
+          key: ${{ runner.os }}-dub-${{ hashFiles('dub.json') }}
+          restore-keys: |
+            ${{ runner.os }}-dub-
+
+      - name: 编译 Release 版本
+        run: dub build --build=release --arch=x86_64
+
+      # 打包发布文件（整理成独立目录后压缩为 zip）
+      - name: 打包发布文件
+        run: |
+          mkdir release-pkg
+          copy .dub\bing-wallpaper.exe release-pkg\
+          copy .dub\libcurl.dll release-pkg\
+          Compress-Archive -Path release-pkg\* -DestinationPath bing-wallpaper-windows-x64.zip
+
+      # 创建 GitHub Release 并上传压缩包
+      - name: 创建 GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: bing-wallpaper-windows-x64.zip
+          generate_release_notes: true # 自动生成更新日志

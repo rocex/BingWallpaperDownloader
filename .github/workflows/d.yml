@@ -1,8 +1,5 @@
 name: 自动编译
 
-env:
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
-
 # 触发条件：推送到 main 分支、或向 main 提交 PR 时触发
 on:
   push:
@@ -17,13 +14,33 @@ jobs:
       # 1. 检出仓库代码
       - name: 检出代码
         uses: actions/checkout@v5
-      
+
       # 2. 安装 D 编译器 + dub（稳定版 dmd）
       - name: 安装 D 环境
-        env:
-          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
         uses: dlang-community/setup-dlang@v2
         with:
           compiler: dmd-stable # 也可填 ldc-stable 使用 LDC 编译器
 
-     
+      # 3. 缓存 dub 依赖与中间产物，加快后续编译速度
+      - name: 缓存编译依赖
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.dub
+            .dub
+          key: ${{ runner.os }}-dub-${{ hashFiles('dub.json') }}
+          restore-keys: |
+            ${{ runner.os }}-dub-
+
+      # 4. 执行 release 编译（自动应用你 dub.json 中的 release 配置）
+      - name: 编译 Release 版本
+        run: dub build --build=release --arch=x86_64
+
+      # 5. 上传编译产物（exe + libcurl.dll）
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: bing-wallpaper-windows-x64
+          path: |
+            .dub/BingWallpaperDownloader.exe
+            .dub/libcurl.dll
