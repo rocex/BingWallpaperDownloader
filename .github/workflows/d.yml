@@ -1,4 +1,4 @@
-name: CI
+name: auto build
 
 on: 
   push:
@@ -15,20 +15,22 @@ on:
     - '.github/workflows/**'
 
 jobs:
-  test:
-    name: Dub Tests
+  build:
+    name: Dub Build
     strategy:
       matrix:
-        os: [ windows-latest]
-        dc: [ dmd-latest ]
+        os: [ubuntu-latest, windows-latest]
+        dc: [dmd-latest, ldc-latest]
     runs-on: ${{ matrix.os }}
     
     steps:
-      - uses: actions/checkout@v2
-      - uses: dlang-community/setup-dlang@v1
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: setup dlang
+        uses: dlang-community/setup-dlang@v2
         with:
           compiler: ${{ matrix.dc }}
-          
-      - name: compile
-        run: dub build --build=release --arch=x86_64
         
+      - name: build
+        run: dub build --build=release
