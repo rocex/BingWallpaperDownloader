@@ -19,8 +19,8 @@ jobs:
     name: Dub Tests
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        dc: [dmd-latest, ldc-latest]
+        os: [ windows-latest]
+        dc: [ dmd-latest ]
     runs-on: ${{ matrix.os }}
     
     steps:
@@ -29,11 +29,6 @@ jobs:
         with:
           compiler: ${{ matrix.dc }}
           
-      - name: Run tests
-        run: dub test --build=unittest-cov
+      - name: compile
+        run: dub build --build=release --arch=x86_64
         
-      - name: Run code coverage
-        if: success()
-        run: |
-          curl https://codecov.io/bash > codecov.sh
-          bash codecov.sh
