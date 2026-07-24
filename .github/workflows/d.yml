@@ -47,3 +47,4 @@ jobs:
           name: bing-wallpaper-downloader-windows-x64
           path: |
             .dub/BingWallpaperDownloader.exe
+            .dub/libcurl.dll
