@@ -22,8 +22,6 @@ jobs:
         os: [ windows-latest]
         dc: [ dmd-latest ]
         include:
-          - os: ubuntu-latest
-            DMD_HOME: 
           - os: windows-latest
             DMD_HOME: C:\hostedtoolcache\windows\dmd\2.112.0\x64\dmd2
     runs-on: ${{ matrix.os }}
