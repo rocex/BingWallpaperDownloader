@@ -22,5 +22,7 @@
                 "-boundscheck=off"
             ]
         }
-    }
+    },
+    "copyFiles-windows-x86":    ["$DMD_HOME/windows/bin/libcurl.dll",   "$DMD_HOME/windows/bin/msvcr120.dll"],
+    "copyFiles-windows-x86_64": ["$DMD_HOME/windows/bin64/libcurl.dll", "$DMD_HOME/windows/bin64/msvcr120.dll"]
 }

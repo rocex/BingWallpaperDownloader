@@ -1,4 +1,4 @@
-name: auto build
+name: Auto Build
 
 on: 
   push:
@@ -21,11 +21,19 @@ jobs:
       matrix:
         os: [ windows-latest]
         dc: [ dmd-latest ]
+        include:
+          - os: ubuntu-latest
+            DMD_HOME: 
+          - os: windows-latest
+            DMD_HOME: C:\hostedtoolcache\windows\dmd\2.112.0\x64\dmd2
     runs-on: ${{ matrix.os }}
+
+    env:
+      DMD_HOME: ${{ matrix.DMD_HOME }}
     
     steps:
       - name: checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
 
       - name: setup dlang
         uses: dlang-community/setup-dlang@v2
